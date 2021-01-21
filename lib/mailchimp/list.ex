@@ -134,6 +134,7 @@ defmodule Mailchimp.List do
       {:ok, %Response{status_code: 200, body: body}} ->
         links = Link.get_links_from_attributes(body)
         href = links["create"].href
+
         IEx.pry
 
         data =
