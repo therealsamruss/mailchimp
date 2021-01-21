@@ -1,4 +1,6 @@
 defmodule Mailchimp.List do
+
+    require IEx
   alias HTTPoison.{Error, Response}
   alias Mailchimp.HTTPClient
   alias Mailchimp.Link
@@ -132,6 +134,7 @@ defmodule Mailchimp.List do
       {:ok, %Response{status_code: 200, body: body}} ->
         links = Link.get_links_from_attributes(body)
         href = links["create"].href
+        IEx.pry
 
         data =
           Map.merge(additional_data, %{
@@ -140,7 +143,7 @@ defmodule Mailchimp.List do
             merge_fields: merge_fields
           })
 
-        case HTTPClient.put(href, Jason.encode!(data)) do
+        case HTTPClient.post(href, Jason.encode!(data)) do
           {:ok, %Response{status_code: 200, body: body}} ->
             {:ok, Member.new(body)}
 
